@@ -2,7 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Profile(models.Model):
-    ROLE_CHOICES = [('nasabah', 'Nasabah')]
+    ROLE_CHOICES = [('nasabah', 'Nasabah'),
+                    ('admin', 'Admin')]
     
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     nama = models.CharField(max_length=100)

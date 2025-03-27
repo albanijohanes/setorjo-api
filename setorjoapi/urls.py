@@ -20,7 +20,7 @@ from api.views import CustomAuthToken, register_nasabah, get_profile
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', CustomAuthToken.as_view(), name='api-login'),
-    path('register/', register_nasabah, name='api-register'),
-    path('profile/', get_profile, name='api-profile'),
+    path('api/login/', CustomAuthToken.as_view(), name='api-login'),
+    path('api/create/', register_nasabah, name='api-register'),
+    path('api/profile/', get_profile, name='api-profile'),
 ]

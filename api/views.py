@@ -18,11 +18,6 @@ class CustomAuthToken(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         
-        # Cek role nasabah
-        if not hasattr(user, 'profile') or user.profile.role != 'nasabah':
-            return Response({'error': 'Akses untuk nasabah saja'}, 
-                          status=status.HTTP_403_FORBIDDEN)
-        
         token, created = Token.objects.get_or_create(user=user)
         return Response({
             'token': token.key,
@@ -35,7 +30,7 @@ class CustomAuthToken(ObtainAuthToken):
 @api_view(['POST'])
 def register_nasabah(request):
     data = request.data
-    required_fields = ['nama', 'email', 'password', 'no_hp', 'alamat']
+    required_fields = ['nama', 'email', 'password', 'no_hp', 'alamat', 'role']
     
     for field in required_fields:
         if field not in data:
@@ -59,7 +54,7 @@ def register_nasabah(request):
             no_hp=data['no_hp'],
             alamat=data['alamat'],
             poin=0,
-            role='nasabah'
+            role=data['role']
         )
     except Exception as e:
         return Response({'error': str(e)}, 
