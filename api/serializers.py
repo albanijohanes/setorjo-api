@@ -30,19 +30,36 @@ class CustomAuthTokenSerializer(serializers.Serializer):
         attrs['user'] = user
         return attrs
 
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ['nama', 'no_hp', 'alamat', 'poin', 'reserved_poin', 'role']
+
 class PenukaranPoinSerializer(serializers.ModelSerializer):
     class Meta:
         model = PenukaranPoin
         fields = ['id', 'jumlah_poin', 'status', 'created_at', 'updated_at']
+        read_only_fields = ['status', 'created_at', 'updated_at']
+
+    def validate_jumlah_poin(self, value):
+        if value <= 0:
+            raise serializers.ValidationError("Jumlah poin harus lebih dari 0")
+            
+        profile = self.context['request'].user.profile
+        if value > profile.available_poin:
+            raise serializers.ValidationError("Poin tersedia tidak mencukupi")
+        return value
 
 class AdminPenukaranPoinSerializer(serializers.ModelSerializer):
-    nasabah = serializers.StringRelatedField()
+    nasabah = serializers.SerializerMethodField()
     
     class Meta:
         model = PenukaranPoin
         fields = '__all__'
-
-class NasabahPoinSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Profile
-        fields = ['poin']
+    
+    def get_nasabah(self, obj):
+        return {
+            'id': obj.nasabah.id,
+            'nama': obj.nasabah.profile.nama,
+            'email': obj.nasabah.email
+        }

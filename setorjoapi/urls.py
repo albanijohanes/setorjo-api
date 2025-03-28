@@ -14,33 +14,36 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+# urls.py
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
 from django.contrib import admin
-from api.views import (CustomAuthToken, 
-                       register_nasabah, 
-                       get_profile,
-                       nasabah_poin, 
-                       penukaran_poin, 
-                       admin_list_nasabah, 
-                       admin_list_penukaran, 
-                       admin_nasabah_detail, 
-                       admin_penukaran_detail
-                       )
+from api.views import (
+    CustomAuthToken,
+    register_nasabah,
+    get_profile,
+    create_penukaran,
+    admin_list_penukaran,
+    update_penukaran_status,
+    admin_list_nasabah,
+    admin_nasabah_detail
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    
+    # Authentication
     path('api/login/', CustomAuthToken.as_view(), name='api-login'),
-    path('api/create/', register_nasabah, name='api-register'),
+    path('api/register/', register_nasabah, name='api-register'),
+    
+    # Profile
     path('api/profile/', get_profile, name='api-profile'),
-
+    
     # Nasabah Endpoints
-    path('api/nasabah/poin/', nasabah_poin, name='nasabah-poin'),
-    path('api/nasabah/penukaran/', penukaran_poin, name='penukaran-poin'),
+    path('api/nasabah/penukaran/', create_penukaran, name='create-penukaran'),
     
     # Admin Endpoints
     path('api/admin/penukaran/', admin_list_penukaran, name='admin-list-penukaran'),
-    path('api/admin/penukaran/<int:pk>/', admin_penukaran_detail, name='admin-penukaran-detail'),
+    path('api/admin/penukaran/<int:pk>/', update_penukaran_status, name='update-penukaran'),
     path('api/admin/nasabah/', admin_list_nasabah, name='admin-list-nasabah'),
     path('api/admin/nasabah/<int:pk>/', admin_nasabah_detail, name='admin-nasabah-detail'),
 ]
