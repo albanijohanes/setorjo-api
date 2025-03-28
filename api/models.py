@@ -14,3 +14,19 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.nama
+
+class PenukaranPoin(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Menunggu'),
+        ('approved', 'Disetujui'),
+        ('rejected', 'Ditolak')
+    ]
+    
+    nasabah = models.ForeignKey(User, on_delete=models.CASCADE, related_name='penukaran_poin')
+    jumlah_poin = models.IntegerField()
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.nasabah.profile.nama} - {self.jumlah_poin} poin"
