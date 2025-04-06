@@ -63,6 +63,8 @@ REST_FRAMEWORK = {
 
 CORS_ORIGIN_ALLOW_ALL = True
 
+CSRF_TRUSTED_ORIGINS = ['https://*.ngrok-free.app']
+
 ROOT_URLCONF = 'setorjoapi.urls'
 
 TEMPLATES = [

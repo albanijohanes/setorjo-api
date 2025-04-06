@@ -22,10 +22,10 @@ from api.views import (
     register_nasabah,
     get_profile,
     create_penukaran,
-    admin_list_penukaran,
     update_penukaran_status,
-    admin_list_nasabah,
-    admin_nasabah_detail
+    history_penukaran,
+    add_points,
+    list_nasabah
 )
 
 urlpatterns = [
@@ -40,10 +40,12 @@ urlpatterns = [
     
     # Nasabah Endpoints
     path('api/nasabah/penukaran/', create_penukaran, name='create-penukaran'),
+    path('api/nasabah/history/', history_penukaran, name='history-penukaran'),
     
     # Admin Endpoints
-    path('api/admin/penukaran/', admin_list_penukaran, name='admin-list-penukaran'),
+    path('api/admin/points/', add_points, name='add-points'),
+    path('api/admin/nasabah/', list_nasabah, name='list-nasabah'),
     path('api/admin/penukaran/<int:pk>/', update_penukaran_status, name='update-penukaran'),
-    path('api/admin/nasabah/', admin_list_nasabah, name='admin-list-nasabah'),
-    path('api/admin/nasabah/<int:pk>/', admin_nasabah_detail, name='admin-nasabah-detail'),
+    path('api/admin/register-nasabah/', register_nasabah, name='register-nasabah'),
+
 ]
